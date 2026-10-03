@@ -1,4 +1,4 @@
-# humanize1
+# humanize1 _(flow-humanize1)_
 
 PolyArch/humanize's gen-idea, gen-plan and RLCR loops as hmz flows: plan first, then build under review.
 
