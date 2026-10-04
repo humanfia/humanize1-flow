@@ -89,8 +89,8 @@ PERMANENT = (
     HarnessUnrecoverable,
 )
 
-LOOPS = ".humanize/rlcr"
-BITLESSON = ".humanize/bitlesson.md"
+LOOPS = ".hmz/rlcr"
+BITLESSON = ".hmz/bitlesson.md"
 
 REVIEW_STARTED = ".review-phase-started"
 EXIT_REASON = ".methodology-exit-reason"
@@ -99,7 +99,7 @@ BUILDING = "state.md"
 FINALIZING = "finalize-state.md"
 ANALYSING = "methodology-analysis-state.md"
 
-_OURS = re.compile(r"^\?\? \.humanize[-/]")
+_OURS = re.compile(r"^\?\? \.(hmz/|humanize[-/])")
 
 _VERDICT = re.compile(
     r"Mainline Progress Verdict:\s*(ADVANCED|STALLED|REGRESSED)(?:[^A-Za-z]|$)",
@@ -556,7 +556,7 @@ class Loop:
     async def _git_clean(self) -> str | None:
         if self._status is None:
             return None
-        tracked, held = await git(self.env, "ls-files", "--", ".humanize")
+        tracked, held = await git(self.env, "ls-files", "--", ".hmz")
         if not tracked and held:
             return blocks.GIT_TRACKED_HUMANIZE
         rows = self._status.splitlines()

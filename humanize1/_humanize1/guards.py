@@ -178,7 +178,7 @@ class Guard:
                 "methodology-analysis-state.md",
             ):
                 return blocks.STATE_FILE_MODIFICATION
-            if base == "plan.md" and ".humanize/rlcr/" in word:
+            if base == "plan.md" and ".hmz/rlcr/" in word:
                 return blocks.PLAN_BACKUP_PROTECTED
             if base == "goal-tracker.md":
                 return render(
@@ -211,7 +211,7 @@ class Guard:
         return where.is_relative_to(self._at(str(self._loop.where)))
 
     def _elsewhere(self, where: PurePosixPath) -> bool:
-        return ".humanize" in where.parts and not self._ours(where)
+        return ".hmz" in where.parts and not self._ours(where)
 
 
 class Prompted:
@@ -293,6 +293,7 @@ def _adds(words: list[str]) -> bool:
     if words[at + 1 : at + 2] != ["add"]:
         return False
     return any(
-        word in ("-A", "--all", ".") or word.removeprefix("./").startswith(".humanize")
+        word in ("-A", "--all", ".")
+        or word.removeprefix("./").startswith((".hmz", ".humanize"))
         for word in words[at + 2 :]
     )

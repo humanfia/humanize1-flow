@@ -1,6 +1,6 @@
 [project]
 name = "flow-humanize1"
-version = "0.1.0"
+version = "0.1.1"
 description = "PolyArch/humanize's gen-idea, gen-plan and RLCR loops as hmz flows: plan first, then build under review."
 readme = "README.md"
 requires-python = ">=3.12"

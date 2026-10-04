@@ -95,7 +95,7 @@ def _repo(tmp_path: Path, *, tracked: bool = False) -> Path:
 
 
 def _loops(repo: Path) -> list[Path]:
-    return sorted((repo / ".humanize" / "rlcr").iterdir())
+    return sorted((repo / ".hmz" / "rlcr").iterdir())
 
 
 def _round(loop: Path) -> int:
@@ -418,7 +418,7 @@ async def test_a_tracked_plan_is_refused_before_anything_is_asked(
         await _rlcr(repo, driver, reviewer)
     assert driver.prompts == []
     assert reviewer.prompts == []
-    assert not (repo / ".humanize").exists()
+    assert not (repo / ".hmz").exists()
 
     over = await _rlcr(
         repo,
@@ -437,7 +437,7 @@ async def test_the_opening_prompt_is_refused_on_another_branch(tmp_path: Path) -
     running = Loop(
         reviewer=None,  # pyright: ignore[reportArgumentType]
         env=local_env(repo),  # pyright: ignore[reportArgumentType]
-        where=PurePosixPath(repo / ".humanize" / "rlcr" / "loop"),
+        where=PurePosixPath(repo / ".hmz" / "rlcr" / "loop"),
         state=State(plan_file="docs/plan.md", start_branch="main"),
     )
     prompted = guards.Prompted(running)
@@ -645,7 +645,7 @@ async def test_the_quiz_is_put_to_the_person_who_can_stop_the_setup(
     assert "\nA. a feature module\nB. a database" in first
     assert second.startswith("Which file says the round?")
     assert "The answers were Q1: A, Q2: B" in going
-    assert not (repo / ".humanize" / "rlcr").exists()
+    assert not (repo / ".hmz" / "rlcr").exists()
 
 
 @pytest.mark.asyncio
