@@ -1,6 +1,6 @@
 [project]
-name = "flow-humanize1"
-version = "0.1.0"
+name = "humanize1-flow"
+version = "0.1.1"
 description = "PolyArch/humanize's gen-idea, gen-plan and RLCR loops as hmz flows: plan first, then build under review."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -9,8 +9,8 @@ license-files = ["LICENSE"]
 dependencies = []
 
 [project.urls]
-Repository = "https://github.com/humanfia/flow-humanize1"
-Issues = "https://github.com/humanfia/flow-humanize1/issues"
+Repository = "https://github.com/humanfia/humanize1-flow"
+Issues = "https://github.com/humanfia/humanize1-flow/issues"
 
 [dependency-groups]
 dev = [

@@ -470,7 +470,7 @@ async def test_a_draft_about_something_else_is_refused(tmp_path: Path) -> None:
 
 @pytest.mark.asyncio
 async def test_the_last_idea_is_planned_and_translated(tmp_path: Path) -> None:
-    ideas = tmp_path / ".humanize" / "ideas"
+    ideas = tmp_path / ".hmz" / "ideas"
     ideas.mkdir(parents=True)
     (ideas / "older.md").write_text("An older draft.")
     (ideas / "newer.md").write_text("The newer draft.")

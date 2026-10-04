@@ -95,7 +95,7 @@ before committing
 
 **Important Rules**:
 - Do NOT use `git add -A`, `git add --all`, or `git add .` during an active RLCR loop
-- Never stage `.humanize/` or legacy `.humanize-*` loop artifacts
+- Never stage `.hmz/` or legacy `.humanize-*` loop artifacts
 - Commit message must follow project conventions
 - AI tools (Claude, Codex, etc.) must NOT have authorship in commits
 - Do NOT include `Co-Authored-By: Claude` or similar AI attribution
@@ -115,18 +115,18 @@ Review untracked files and add appropriate patterns to `.gitignore`.
 """
 
 GIT_NOT_CLEAN_HUMANIZE_LOCAL = """
-**Special Case - .humanize directory detected**:
-The `.humanize/` directory is created by the RLCR loop and should NOT be committed.
+**Special Case - .hmz directory detected**:
+The `.hmz/` directory is created by the RLCR loop and should NOT be committed.
 Please add it to .gitignore:
 ```bash
-echo '.humanize*' >> .gitignore
+echo '.hmz*' >> .gitignore
 git add .gitignore
 ```
 """
 
 GIT_TRACKED_HUMANIZE = """# Tracked Humanize State Blocked
 
-Detected tracked or staged files under `.humanize/`.
+Detected tracked or staged files under `.hmz/`.
 
 These files are local Humanize loop state and must remain outside version control.
 
@@ -134,7 +134,7 @@ These files are local Humanize loop state and must remain outside version contro
 
 1. Remove Humanize state from the index:
 
-       git rm --cached -r .humanize
+       git rm --cached -r .hmz
 
 2. Keep only real project files staged.
 3. Retry the stop action after the local state is no longer tracked.
@@ -462,11 +462,11 @@ Round contract files MUST be in the active loop directory.
 
 **Correct path**: `{{CORRECT_PATH}}`"""
 
-GIT_ADD_HUMANIZE = """# Git Add Blocked: .humanize Protection
+GIT_ADD_HUMANIZE = """# Git Add Blocked: .hmz Protection
 
-The `.humanize/` directory contains local loop state that should NOT be committed.
+The `.hmz/` directory contains local loop state that should NOT be committed.
 
-Your command was blocked because it would add .humanize files to version control.
+Your command was blocked because it would add .hmz files to version control.
 
 ## Allowed Commands
 
@@ -478,23 +478,23 @@ Use specific file paths instead of broad patterns:
 
 ## Blocked Commands
 
-These commands are blocked when .humanize exists:
+These commands are blocked when .hmz exists:
 
-    git add .humanize      # direct reference
-    git add -A             # adds all including .humanize
-    git add --all          # adds all including .humanize
-    git add .              # may include .humanize if not gitignored
+    git add .hmz           # direct reference
+    git add -A             # adds all including .hmz
+    git add --all          # adds all including .hmz
+    git add .              # may include .hmz if not gitignored
     git add -f .           # force bypasses gitignore
 
-## Adding .humanize to .gitignore
+## Adding .hmz to .gitignore
 
-If you need to add `.humanize*` to `.gitignore`, follow these steps:
+If you need to add `.hmz*` to `.gitignore`, follow these steps:
 
-1. Edit `.gitignore` to append `.humanize*`
+1. Edit `.gitignore` to append `.hmz*`
 2. Run: `git add .gitignore`
 3. Run: `git commit -m "Add humanize local folder into gitignore"`
 
-IMPORTANT: The commit message must NOT contain the literal string ".humanize" to avoid \
+IMPORTANT: The commit message must NOT contain the literal string ".hmz" to avoid \
 triggering this protection."""
 
 GIT_PUSH = """# Git Push Blocked

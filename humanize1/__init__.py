@@ -94,7 +94,7 @@ _NO_MATERIAL_ROUNDS = 2
 
 _ANSWERING = 3
 
-IDEAS = ".humanize/ideas"
+IDEAS = ".hmz/ideas"
 
 PLAN = "docs/plan.md"
 
@@ -255,7 +255,7 @@ class Idea(FlowParams):
     )
     output: str = Field(
         default="",
-        description="--output: where the draft goes, blank for .humanize/ideas",
+        description="--output: where the draft goes, blank for .hmz/ideas",
     )
 
 
@@ -309,7 +309,7 @@ class Plan(FlowParams):
 class Rlcr(FlowParams):
     """Every flag the loop takes, under the name the plugin gives it.
 
-    What the plugin reads from `.humanize/config.json` is here too, since a config file and a
+    What the plugin reads from `.hmz/config.json` is here too, since a config file and a
     flag are the same setting arrived at two ways -- and this is the one way.
 
     What the plugin says with a model name is said here by choosing an agent: `codex_model`,

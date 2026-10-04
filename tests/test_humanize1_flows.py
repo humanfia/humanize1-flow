@@ -140,7 +140,7 @@ async def caller(task, *, agents, envs, params, ctx):
         task,
         agents={"planner": agents["worker"], "analyst": agents["reviewer"]},
         envs={"workspace": envs["workspace"]},
-        params={"input": ".humanize/ideas/draft.md", "mode": "direct", "turn_retries": 0},
+        params={"input": ".hmz/ideas/draft.md", "mode": "direct", "turn_retries": 0},
     )
     over = await load("humanize1:rlcr")(
         task,
@@ -159,7 +159,7 @@ def _staged(prompt: str) -> Path:
 
 
 def _loop(repo: Path) -> Path:
-    (loop,) = (repo / ".humanize" / "rlcr").iterdir()
+    (loop,) = (repo / ".hmz" / "rlcr").iterdir()
     return loop
 
 
@@ -266,7 +266,7 @@ async def test_gen_idea_writes_one_draft_and_never_over_another(
         local=local_env(tmp_path),
     )
 
-    (draft,) = (tmp_path / ".humanize" / "ideas").iterdir()
+    (draft,) = (tmp_path / ".hmz" / "ideas").iterdir()
     assert said == str(draft)
     assert re.fullmatch(r"add-a-feature-module-please-\d{8}-\d{6}\.md", draft.name)
     assert draft.read_text().startswith("# Feature Module")
@@ -328,7 +328,7 @@ async def test_an_idea_is_planned_and_built_end_to_end(tmp_path: Path) -> None:
         "Add a feature module that says which round wrote it."
         in (loop / "goal-tracker.md").read_text()
     )
-    assert git(repo, "status", "--porcelain") == "?? .humanize/"
+    assert git(repo, "status", "--porcelain") == "?? .hmz/"
 
 
 @pytest.mark.asyncio
@@ -339,7 +339,7 @@ async def test_another_flow_calls_gen_plan_and_rlcr_by_ref(tmp_path: Path) -> No
     (verse / "humanize1").symlink_to(FLOW)
     repo = repository(tmp_path / "repo")
     (repo / ".git" / "info" / "exclude").write_text("docs/plan.md\n")
-    ideas = repo / ".humanize" / "ideas"
+    ideas = repo / ".hmz" / "ideas"
     ideas.mkdir(parents=True)
     (ideas / "draft.md").write_text("Add a feature module.\n")
     worker = FakeAgentDriver(reply=_works(repo))

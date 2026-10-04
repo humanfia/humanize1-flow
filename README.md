@@ -1,4 +1,4 @@
-# humanize1 _(flow-humanize1)_
+# humanize1 _(humanize1-flow)_
 
 PolyArch/humanize's gen-idea, gen-plan and RLCR loops as hmz flows: plan first, then build under review.
 
@@ -22,14 +22,13 @@ agents agreed on, and `rlcr` builds that plan under review until nothing is left
 
 ## Install
 
-You need [hmz](https://github.com/humanfia/humanize). In hmz, open `/flows`, go to
-**Flowverses → official → humanize1**, pick a version and install it.
+You need [hmz](https://github.com/humanfia/humanize). In hmz, open `/flow`, go to
+**Flowverses → official → humanize1** and **Install** it.
 
-To run it from a clone instead, point `-f` at the flow's directory:
+To run a release without installing it, name it by its git ref:
 
 ```sh
-git clone --branch v0.1.0 https://github.com/humanfia/flow-humanize1
-hmz exec -f ./flow-humanize1/humanize1:gen-idea ...
+hmz exec -f git+https://github.com/humanfia/humanize1-flow@v0.1.1#humanize1:gen-idea ...
 ```
 
 ## Usage
@@ -42,13 +41,13 @@ hmz exec -f ./flow-humanize1/humanize1:gen-idea ...
 
 ```sh
 hmz exec -f humanize1:gen-idea -a drafter=claude/claude-opus-5:max \
-    -b cost=10 "add undo and redo to the editor"
+    -p budget.cost=10 "add undo and redo to the editor"
 hmz exec -f humanize1:gen-plan \
     -a planner=claude/claude-opus-5:max -a analyst=codex/gpt-5.6-sol:max \
-    -b cost=30 "add undo and redo to the editor"
+    -p budget.cost=30 "add undo and redo to the editor"
 hmz exec -f humanize1:rlcr \
     -a builder=claude/claude-opus-5:max -a reviewer=codex/gpt-5.6-sol:max \
-    -b duration=2d,cost=300 -p max=20 "build the plan"
+    -p budget.duration=2d,budget.cost=300 -p max=20 "build the plan"
 ```
 
 Name the phase: a bare `humanize1` is refused. Each phase is a run of its own, and what passes
@@ -64,7 +63,7 @@ no code. The run ends when the draft is written.
 | Param | Default | |
 | --- | --- | --- |
 | `n` | `6` | Directions to explore, 2 to 10. |
-| `output` | blank | Where the draft goes. Blank writes a new file under `.humanize/ideas/`; a file that already exists is refused. |
+| `output` | blank | Where the draft goes. Blank writes a new file under `.hmz/ideas/`; a file that already exists is refused. |
 
 ### gen-plan
 
@@ -78,7 +77,7 @@ file, or run `gen-plan` again with somebody at the prompt to be asked.
 
 | Param | Default | |
 | --- | --- | --- |
-| `input` | blank | The draft to plan from. Blank takes the newest in `.humanize/ideas/`. |
+| `input` | blank | The draft to plan from. Blank takes the newest in `.hmz/ideas/`. |
 | `output` | blank | Where the plan goes. Blank is `docs/plan.md`, which must not exist yet. |
 | `mode` | `discussion` | `discussion` reviews and revises; `direct` writes the plan once. |
 | `auto_start_rlcr_if_converged` | `false` | Once the two have agreed, do not put open decisions to you. |
@@ -143,7 +142,7 @@ yours to choose on every run.
 ### Coming from the plugin
 
 Every flag the plugin takes is a param of the phase it belongs to, under the plugin's own name.
-A run writes what the plugin writes, where the plugin writes it: `.humanize/rlcr/<timestamp>/`
+A run writes what the plugin writes, where the plugin writes it: `.hmz/rlcr/<timestamp>/`
 in your repository, with `state.md`, `goal-tracker.md`, and a prompt, summary and review per
 round. `humanize monitor rlcr` reads a run of this.
 
