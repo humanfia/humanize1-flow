@@ -1,4 +1,4 @@
-# humanize1 _(flow-humanize1)_
+# humanize1 _(humanize1-flow)_
 
 PolyArch/humanize's gen-idea, gen-plan and RLCR loops as hmz flows: plan first, then build under review.
 
@@ -28,7 +28,7 @@ You need [hmz](https://github.com/humanfia/humanize). In hmz, open `/flow`, go t
 To run a release without installing it, name it by its git ref:
 
 ```sh
-hmz exec -f git+https://github.com/humanfia/flow-humanize1@v0.1.1#humanize1:gen-idea ...
+hmz exec -f git+https://github.com/humanfia/humanize1-flow@v0.1.1#humanize1:gen-idea ...
 ```
 
 ## Usage
