@@ -209,9 +209,12 @@ async def review_once(
     ctx: FlowContext,
 ) -> str:
     reviewer = agents["reviewer"]
-    session = await reviewer.spawn(env=envs["workspace"])
+    session = await reviewer.spawn()
+    workspace = envs["workspace"]
     return await timed(
-        lambda budget: reviewer.run(task, session=session, budget=budget),
+        lambda budget: reviewer.run(
+            task, session=session, env=workspace, budget=budget
+        ),
         params.seconds,
     )
 

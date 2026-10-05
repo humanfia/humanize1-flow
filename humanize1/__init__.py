@@ -512,13 +512,17 @@ def _undecided(held: str) -> list[str]:
 
 
 async def _asked(
-    human: Outworlder, session: Session, question: str, options: list[str]
+    human: Outworlder,
+    session: Session,
+    env: Here,
+    question: str,
+    options: list[str],
 ) -> str:
     listed = "\n".join(
         f"{letter}. {one}" for letter, one in zip("ABCD", options, strict=False)
     )
     said = await human.run(
-        f"{question}\n\n{listed}", session=session, output_schema=Choice
+        f"{question}\n\n{listed}", session=session, env=env, output_schema=Choice
     )
     return said.choice
 
@@ -528,8 +532,10 @@ async def _answered[T: BaseModel](
 ) -> T:
     for attempt in range(1, _ANSWERING + 1):
         try:
-            session = await agent.spawn(env=env)
-            return await agent.run(prompt, session=session, output_schema=schema)
+            session = await agent.spawn()
+            return await agent.run(
+                prompt, session=session, env=env, output_schema=schema
+            )
         except PERMANENT:
             raise
         except HarnessError as why:
@@ -592,17 +598,21 @@ async def _take(
         limit = _turn_limit(turns.config, turns.began, stage)
         try:
             if role == "analyst":
-                session = await agent.spawn(env=turns.env)
+                session = await agent.spawn()
             elif turns.writing is None:
-                session = turns.writing = await agent.spawn(env=turns.env)
+                session = turns.writing = await agent.spawn()
             else:
                 session = turns.writing
             answer = await timed(
                 lambda budget, session=session: (
-                    agent.run(prompt, session=session, budget=budget)
+                    agent.run(prompt, session=session, env=turns.env, budget=budget)
                     if schema is None
                     else agent.run(
-                        prompt, session=session, output_schema=schema, budget=budget
+                        prompt,
+                        session=session,
+                        env=turns.env,
+                        output_schema=schema,
+                        budget=budget,
                     )
                 ),
                 limit,
@@ -681,7 +691,7 @@ async def _idea(drafter: Agent, env: Here, task: str, config: Idea) -> PurePosix
             f"{where}: output file already exists - choose a different path"
         )
     await _writable(env, where.parent)
-    session = await drafter.spawn(env=env)
+    session = await drafter.spawn()
     asked = render(
         planning.GEN_IDEA,
         N=config.n,
@@ -690,7 +700,7 @@ async def _idea(drafter: Agent, env: Here, task: str, config: Idea) -> PurePosix
         IDEA_BODY=task,
     )
     for _ in range(_ANSWERING):
-        said = await drafter.run(asked, session=session)
+        said = await drafter.run(asked, session=session, env=env)
         if await read(env, where) is not None:
             return where
         if said.strip():
@@ -994,10 +1004,10 @@ async def _again(
     return running, told
 
 
-async def _built(builder: Builder, session: Session, asking: str) -> None:
+async def _built(builder: Builder, session: Session, env: Here, asking: str) -> None:
     for attempt in range(1, loop._TRIES + 1):
         try:
-            await builder.run(asking, session=session)
+            await builder.run(asking, session=session, env=env)
         except (*PERMANENT, SessionError):
             raise
         except HarnessError as why:
@@ -1200,7 +1210,8 @@ async def _understood(
     try:
         quiz = await reviewer.run(
             render(prompts.PLAN_UNDERSTANDING_QUIZ, PLAN_FILE=plan, PLAN_CONTENT=held),
-            session=await reviewer.spawn(env=env),
+            session=await reviewer.spawn(),
+            env=env,
             output_schema=Quiz,
         )
     except HarnessError:
@@ -1208,11 +1219,11 @@ async def _understood(
     if quiz is None or not quiz.questions:
         print("Plan understanding quiz unavailable, continuing without it.")
         return
-    person = await human.spawn(env=env)
+    person = await human.spawn()
     right = 0
     asked = 0
     for question in quiz.questions:
-        picked = await _asked(human, person, question.question, question.options)
+        picked = await _asked(human, person, env, question.question, question.options)
         if not picked:
             return
         asked += 1
@@ -1223,6 +1234,7 @@ async def _understood(
     going = await _asked(
         human,
         person,
+        env,
         f"{quiz.summary}\n\nThe answers were "
         + ", ".join(
             f"Q{at + 1}: {question.answer}"
@@ -1419,10 +1431,10 @@ async def rlcr(
     builder.on_permission_request(guard)
     builder.on_pre_tool_use(guard.watching)
     builder.on_user_prompt_submit(guards.Prompted(running))
-    session = await builder.spawn(env=env)
+    session = await builder.spawn()
     asking: str | None = told
     while asking is not None:
-        await _built(builder, session, asking)
+        await _built(builder, session, env, asking)
         asking = running.continuing = await running.stopped()
     return running.over
 
