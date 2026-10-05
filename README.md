@@ -29,7 +29,7 @@ You need [hmz](https://github.com/humanfia/humanize). In hmz, open `/flow`, go t
 To run a release without installing it, name it by its git ref:
 
 ```sh
-hmz exec -f git+https://github.com/humanfia/humanize1-flow@v0.1.1#humanize1:gen-idea ...
+hmz exec -f git+https://github.com/humanfia/humanize1-flow@v0.2.0#humanize1:gen-idea ...
 ```
 
 ## Usage
