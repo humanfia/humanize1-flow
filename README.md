@@ -17,6 +17,7 @@ agents agreed on, and `rlcr` builds that plan under review until nothing is left
   - [What ends it](#what-ends-it)
   - [Picking it up](#picking-it-up)
   - [Coming from the plugin](#coming-from-the-plugin)
+- [Maintainers](#maintainers)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -157,6 +158,10 @@ Four things work differently:
 
 Another flow can call a phase by ref, `load("humanize1:gen-plan")` or `load("humanize1:rlcr")`;
 see [A flow that calls a flow](https://docs.humanfia.ai/humanize/weaver/calling-flows).
+
+## Maintainers
+
+[@futrime](https://github.com/futrime), as listed in [`.github/CODEOWNERS`](.github/CODEOWNERS).
 
 ## Contributing
 
