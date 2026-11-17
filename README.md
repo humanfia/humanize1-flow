@@ -129,7 +129,7 @@ line is not read.
 - **`complete`**: the reviewer finds nothing left, and the code review is clean;
 - **`maxiter`**: `max` rounds have run;
 - **`stop`**: the reviewer calls a halt, or the loop sees it going round in circles;
-- **the [budget](https://docs.humanfia.ai/humanize/features/allowances)**, as for every phase.
+- **the [budget](https://humanfia.ai/humanize/features/allowances)**, as for every phase.
 
 ### Picking it up
 
@@ -157,7 +157,7 @@ Four things work differently:
 | The plan quiz | Put to you only when you are at the prompt. With nobody there, it is skipped, and no reviewer turn is spent on it. |
 
 Another flow can call a phase by ref, `load("humanize1:gen-plan")` or `load("humanize1:rlcr")`;
-see [A flow that calls a flow](https://docs.humanfia.ai/humanize/weaver/calling-flows).
+see [A flow that calls a flow](https://humanfia.ai/humanize/weaver/calling-flows).
 
 ## Maintainers
 
